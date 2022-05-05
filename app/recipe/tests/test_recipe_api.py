@@ -18,7 +18,7 @@ def sample_recipe(user, **params):
     defaults = {
         'title': 'Sample recipe',
         'time_minutes': 10,
-        'price': 5.00
+        'price': 5.00,
     }
     defaults.update(params)
 
@@ -44,19 +44,19 @@ class PrivateRecipeApiTests(TestCase):
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            'test@gmail.com'
+            'test@gmail.com',
             'testpass'
         )
         self.client.force_authenticate(self.user)
 
     def test_retrieve_recipes(self):
-        """Test retrieving a list of recipes"""
+        """Test retrieving list of recipes"""
         sample_recipe(user=self.user)
         sample_recipe(user=self.user)
 
         res = self.client.get(RECIPES_URL)
 
-        recipes = Recipe.objects.all().order_by('-id')
+        recipes = Recipe.objects.all().order_by('id')
         serializer = RecipeSerializer(recipes, many=True)
 
         self.assertEqual(res.status_code, status.HTTP_200_OK)
@@ -65,7 +65,7 @@ class PrivateRecipeApiTests(TestCase):
     def test_recipes_limited_to_user(self):
         """Test retrieving recipes for user"""
         user2 = get_user_model().objects.create_user(
-            'other@gmail.com'
+            'other@gmail.com',
             'password123'
         )
         sample_recipe(user=user2)
