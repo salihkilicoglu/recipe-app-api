@@ -13,7 +13,7 @@ from recipe.serializers import IngredientSerializer
 INGREDIENTS_URL = reverse('recipe:ingredient-list')
 
 
-class PublicIngredientsApıTests(TestCase):
+class PublicIngredientsApiTests(TestCase):
     """Test the publicly available ingredients API"""
 
     def setUp(self):
@@ -26,13 +26,13 @@ class PublicIngredientsApıTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
 
 
-class PrivateIngredientsApıTests(TestCase):
+class PrivateIngredientsApiTests(TestCase):
     """Test the private ingredients API"""
 
     def setUp(self):
         self.client = APIClient()
         self.user = get_user_model().objects.create_user(
-            'test@gmail.com'
+            'test@gmail.com',
             'testpass'
         )
         self.client.force_authenticate(self.user)
